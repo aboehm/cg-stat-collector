@@ -6,7 +6,7 @@ from collector import Collector
 from collector.sources import CGroupFilesystem
 from collector.targets import Console
 from collector.targets.elastic import Elasticsearch
-from collector.targets.syslog import SyslogRFC5424
+from collector.targets.syslog import Syslog, NetSyslogRFC5424
 import datetime, sys, time, argparse
 
 class SourceAction(argparse.Action):
@@ -69,7 +69,7 @@ class TargetAction(argparse.Action):
 			else:
 				targets += [Console("json", True)]
 
-		elif target == "syslog":
+		elif target == "netsyslog":
 			if options == None:
 				host = "localhost"
 				port = 514
@@ -81,7 +81,11 @@ class TargetAction(argparse.Action):
 				host = a[0]
 				port = int(a[1])
 			
-			targets += [SyslogRFC5424(host, port)]
+			targets += [NetSyslogRFC5424(host, port)]
+
+		elif target == "syslog":
+			targets += [Syslog()]
+
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="System Metric Collector")
