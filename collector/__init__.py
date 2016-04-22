@@ -61,5 +61,5 @@ class Collector:
 					target.push(doc)
 					docs += 1
 		
-		print("%i documents pushed to %i targets" % (docs, len(self.targets)))
+		# print("%i documents pushed to %i targets" % (docs, len(self.targets)))
 
