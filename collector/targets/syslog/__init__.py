@@ -7,16 +7,18 @@ from collector.targets import datetime2iso_corrector
 import json
 from collector.targets.syslog.SyslogClient import SyslogClientRFC5424, SyslogClient
 import syslog
+import os
 
 class NetSyslogRFC5424(Target):
-	def __init__(self, host, port, proto="tcp"):
+	def __init__(self, host, port, proto="tcp", program="netsyslog"):
 		Target.__init__(self, "Syslog RFC5424 host=%s:%i" % (host, port))
+		self.program = program
 		self.client = SyslogClientRFC5424(host, port, proto=proto)
 
 	def push(self, doc):
 		d = datetime2iso_corrector(doc.data())
 		d["type"] = doc.type()
-		self.client.log(json.dumps(d), facility=SyslogClient.FAC_SYSLOG, severity=SyslogClient.SEV_DEBUG, program="syslog-collector-target", pid=1)
+		self.client.log(json.dumps(d), facility=SyslogClient.FAC_SYSLOG, severity=SyslogClient.SEV_DEBUG, program=self.program, pid=os.getpid())
 
 class Syslog(Target):
 	def __init__(self):
