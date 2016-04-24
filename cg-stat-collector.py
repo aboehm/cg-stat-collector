@@ -80,14 +80,27 @@ class TargetAction(argparse.Action):
 				host = "localhost"
 				port = 514
 			else:
-				a = options.split(':')
+				a = options.split('://')
+				if len(a) == 1:
+					proto = "udp"
+					con_port = a[0]
+				else:
+					proto = a[0].lower()
+					if proto != "udp" and proto != "tcp":
+						return False
+					else:
+						proto = a[0]
+
+					con_part = a[1]
+
+				a = con_part.split(':')
 				if len(a) != 2:
 					return False
-
-				host = a[0]
-				port = int(a[1])
+				else:
+					host = a[0]
+					port = int(a[1])
 			
-			targets += [NetSyslogRFC5424(host, port, program=get_program_info()["name"])]
+			targets += [NetSyslogRFC5424(host, port, proto=proto, program=get_program_info()["name"])]
 
 		elif target == "syslog":
 			targets += [Syslog()]
