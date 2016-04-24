@@ -9,6 +9,12 @@ from collector.targets.elastic import Elasticsearch
 from collector.targets.syslog import Syslog, NetSyslogRFC5424
 import datetime, sys, time, argparse
 
+def get_program_info():
+	return {
+		"name": "cg-stat-collector",
+		"version": "0.0.1",
+	}
+
 class SourceAction(argparse.Action):
 	def __init__(self, option_strings, dest, nargs=None, **kwargs):
 		if nargs is not None:
@@ -81,37 +87,51 @@ class TargetAction(argparse.Action):
 				host = a[0]
 				port = int(a[1])
 			
-			targets += [NetSyslogRFC5424(host, port)]
+			targets += [NetSyslogRFC5424(host, port, program=get_program_info()["name"])]
 
 		elif target == "syslog":
 			targets += [Syslog()]
 
 
 if __name__ == "__main__":
-	parser = argparse.ArgumentParser(description="System Metric Collector")
+	parser = argparse.ArgumentParser(
+		prog=get_program_info()["name"],
+		description="System Metric Collector",
+	)
 	parser.add_argument(
 		'--target',
-		dest='targets',
+		help="add logging target",
+		dest='target',
+		default=[],
 		action=TargetAction,
 	)
 	parser.add_argument(
 		'--source',
-		dest='sources',
+		help="add metric source",
+		dest='source',
+		default=[],
 		action=SourceAction,
 	)
 	parser.add_argument(
 		'--interval',
 		dest='interval',
+		help="interval between metric collection runs",
 		type=float,
 		nargs='?',
 		default=0
 	)
 	args = parser.parse_args()
 
-	c = Collector()
-	c.add_source(CGroupFilesystem("/sys/fs/cgroup"))
+	if len(args.source) == 0 or len(args.target) == 0:
+		print("No sources or targets given!\n")
+		parser.print_help()
 
-	for t in args.targets:
+	c = Collector()
+
+	for s in args.source:
+		c.add_source(s)
+
+	for t in args.target:
 		c.add_target(t)
 
 	while True:
