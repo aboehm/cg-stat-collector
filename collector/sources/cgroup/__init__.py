@@ -71,32 +71,20 @@ def compute_difference_over_dictonaries(new, old, diffseconds = 0):
 	return r
 
 class CGroup(Source):
-	ID_HASH_ALGO = "sha256"
-
 	def __init__(self, name, gtype, path, source="Filesystem"):
 		Source.__init__(self, name)
-		self.id = hashlib.new(CGroup.ID_HASH_ALGO)
 		self.type = gtype
 		self.path = os.path.abspath(path)
 		self.data = { }
-		self.timestamp = datetime.now()
 		self.last_data = { }
-		self.last_timestamp = datetime.now()
 		self.params = [
 			# name, filename, read function, simple value monotonic growing
 			("tasks", "tasks", self.read_param_number_array),
 		]
 
-	def get_uuid(self):
-		s = "%s|%s|%s|%s" % (socket.gethostname(), self.name, self.type, self.timestamp.isoformat())
-		# python3->2 compatiblity
-		s = s.encode("ASCII", errors='ignore')
-		self.id.update(s)
-		return self.id.hexdigest()
+	def update(self):
+		Source.update(self)
 
-	def update(self):		
-		self.last_timestamp = self.timestamp
-		self.timestamp = datetime.now()
 		self.last_data = self.data
 		self.data = { }
 
@@ -108,26 +96,11 @@ class CGroup(Source):
 
 	def docs(self):
 		docs = [ ]
-		utcdelta = datetime.now()-datetime.utcnow()
-		td = (self.timestamp-self.last_timestamp).total_seconds()
-
-		basedoc = {
-			"host": socket.gethostname(),
+		basedoc = self.get_base_information()
+		basedoc.update({
 			"name": self.name,
 			"path": self.path,
-			"collected": {
-				"year": self.timestamp.year,
-				"hour": self.timestamp.hour,
-				"month": self.timestamp.month,
-				"day": self.timestamp.day,
-				"minute": self.timestamp.minute,
-				"second": self.timestamp.second,
-				"microsecond": self.timestamp.microsecond,
-				"weekday": self.timestamp.strftime("%A"),
-				"utc": self.timestamp.isoformat(),
-				"localtime": (self.timestamp-utcdelta).isoformat(),
-			}
-		}
+		})
 
 		for d in self.build_data(td):
 			doc_data = basedoc.copy()
@@ -135,7 +108,6 @@ class CGroup(Source):
 
 			docs += [Document(
 				self.name,
-				doc_id = self.get_uuid(),
 				doc_type = self.type,
 				doc_data = doc_data
 			)]
