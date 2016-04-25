@@ -39,6 +39,8 @@ class Console(Target):
 
 		if self.format == "json":
 			d = datetime2iso_corrector(doc.data())
+			d["id"] = doc.id()
+			d["type"] = doc.type()
 			out.write(json.dumps(d)+"\n")
 		else:
 			out.write(str(doc)+"\n")
