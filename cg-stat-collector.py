@@ -4,6 +4,7 @@
 
 from collector import Collector
 from collector.sources import CGroupFilesystem
+from collector.sources.Command import Command
 from collector.targets import Console
 from collector.targets.elastic import Elasticsearch
 from collector.targets.syslog import Syslog, NetSyslogRFC5424
@@ -41,6 +42,16 @@ class SourceAction(argparse.Action):
 				options = "/sys/fs/cgroup"
 
 			sources += [CGroupFilesystem(options)]
+
+		if source == "command":
+			if options == None:
+				return False
+			else:
+				a = options.split(" ")
+				if len(a) > 1:
+					sources += [Command(a[0], arguments=a[1:])]
+				else:
+					sources += [Command(a[0])]
 
 class TargetAction(argparse.Action):
 	def __init__(self, option_strings, dest, nargs=None, **kwargs):
