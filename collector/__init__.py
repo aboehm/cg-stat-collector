@@ -60,9 +60,11 @@ class Source:
 	def docs(self):
 		return []
 
+	def get_timedelta(self):
+		return (self.timestamp-self.last_timestamp).total_seconds()
+
 	def get_base_information(self):
 		utcdelta = datetime.now()-datetime.utcnow()
-		td = (self.timestamp-self.last_timestamp).total_seconds()
 
 		return {
 			"host": socket.gethostname(),
