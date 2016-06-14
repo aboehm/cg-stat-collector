@@ -6,7 +6,7 @@ from subprocess import Popen, PIPE
 from datetime import datetime
 
 class Command(Source):
-	def __init__(self, command, arguments=[], bufsize=4096):
+	def __init__(self, command, arguments=[], bufsize=1048576):
 		Source.__init__(self, "Command")
 		self.command = command
 		self.arguments = arguments
