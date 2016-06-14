@@ -2,7 +2,7 @@
 # vim: ts=4 sw=4 noet
 
 from datetime import datetime
-import logging, elasticsearch, logstash
+import logging, elasticsearch
 from collector import Target, Document
 
 class Elasticsearch(Target):
