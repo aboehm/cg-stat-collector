@@ -3,7 +3,8 @@
 # vim: ts=4 sw=4 noet
 
 from collector import Collector
-from collector.sources import CGroupFilesystem
+from collector.sources.cgroup import CGroupFilesystem
+from collector.sources.ps import UnixPS, LinuxPS
 from collector.sources.Command import Command
 from collector.targets import Console
 from collector.targets.elastic import Elasticsearch
@@ -43,7 +44,7 @@ class SourceAction(argparse.Action):
 
 			sources += [CGroupFilesystem(options)]
 
-		if source == "command":
+		elif source == "command":
 			if options == None:
 				return False
 			else:
@@ -52,6 +53,13 @@ class SourceAction(argparse.Action):
 					sources += [Command(a[0], arguments=a[1:])]
 				else:
 					sources += [Command(a[0])]
+
+		elif source == "unixps":
+			sources += [UnixPS()]
+
+		elif source == "linuxps":
+			sources += [LinuxPS()]
+
 
 class TargetAction(argparse.Action):
 	def __init__(self, option_strings, dest, nargs=None, **kwargs):
