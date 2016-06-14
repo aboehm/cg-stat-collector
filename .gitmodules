@@ -1,0 +1,3 @@
+[submodule "collector/targets/syslog/SyslogClient"]
+	path = collector/targets/syslog/SyslogClient
+	url = https://github.com/aboehm/pysyslogclient
