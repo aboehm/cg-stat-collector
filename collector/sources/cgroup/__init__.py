@@ -95,6 +95,9 @@ class CGroup(Source):
 		self.test_param(param)
 
 		p = self.path + "/" + param
+		if os.path.exists(p) == False:
+			return None
+
 		f = open(p, "r")
 		if f == None:
 			raise GroupExceptionInaccessiblePath(p)
