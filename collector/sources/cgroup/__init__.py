@@ -4,7 +4,7 @@
 from datetime import datetime
 import os, socket, hashlib
 from collector import Source, Document
-from collector.sources import compute_difference_over_dictonaries, field_converter_integer, field_converter_kilobyte, field_converter_nanosecond, field_converter_microsecond, field_converter_userhz
+from collector.sources import compute_difference_over_dictonaries, field_converter_integer, field_converter_kilobyte, field_converter_nanosecond, field_converter_microsecond, field_converter_millisecond, field_converter_userhz
 
 class GroupException(Exception):
 	def __init__(self, cause, data=None):
@@ -54,7 +54,9 @@ class CGroup(Source):
 			if param == "tasks":
 				self.pids = func(filename)
 
-			self.data[param] = func(filename, conv)
+			d = func(filename, conv)
+			if type(d) in [int, float] or len(d) > 0:
+				self.data[param] = d
 
 	def build_data(self, timediff_sec):
 		return [compute_difference_over_dictonaries(self.data, self.last_data, timediff_sec)]
@@ -187,8 +189,8 @@ class CPUAccount(CGroup):
 		CGroup.__init__(self, name, self.__class__.__name__, path)
 		self.params += [
 			("usage", "cpuacct.usage", self.read_param, field_converter_nanosecond),
-			("stat", "cpuacct.stat", self.read_param_key_value, field_converter_userhz),
 			("usage_percpu", "cpuacct.usage_percpu", self.read_param_enumerated_array, field_converter_nanosecond),
+#			("stat", "cpuacct.stat", self.read_param_key_value, field_converter_userhz),
 		]
 
 class CPU(CGroup):
@@ -196,8 +198,8 @@ class CPU(CGroup):
 		CGroup.__init__(self, name, self.__class__.__name__, path)
 		self.params += [
 				("cfs_period_us", "cpu.cfs_period_us", self.read_param, field_converter_microsecond),
-				("stat", "cpu.stat", self.read_param_key_value, field_converter_nanosecond),
 				("shares", "cpu.shares", self.read_param, field_converter_nanosecond),
+#				("stat", "cpu.stat", self.read_param_key_value, field_converter_nanosecond),
 		]
 
 class Memory(CGroup):
@@ -205,14 +207,23 @@ class Memory(CGroup):
 		CGroup.__init__(self, name, self.__class__.__name__, path)
 		self.params += [
 				("usage_in_bytes", "memory.usage_in_bytes", self.read_param, field_converter_integer),
+				("max_usage_in_bytes", "memory.max_usage_in_bytes", self.read_param, field_converter_integer),
 				("failcnt", "memory.failcnt", self.read_param, field_converter_integer),
-				("stat", "memory.stat", self.read_param_key_value, field_converter_integer),
+				("kmem_usage_in_bytes", "memory.kmem.usage_in_bytes", self.read_param, field_converter_integer),
+				("kmem_max_usage_in_bytes", "memory.kmem.max_usage_in_bytes", self.read_param, field_converter_integer),
+				("kmem_failcnt", "memory.kmem.failcnt", self.read_param, field_converter_integer),
+				("memsw_usage_in_bytes", "memory.memsw.usage_in_bytes", self.read_param, field_converter_integer),
+				("memsw_max_usage_in_bytes", "memory.memsw.max_usage_in_bytes", self.read_param, field_converter_integer),
+				("memsw_failcnt", "memory.memsw.failcnt", self.read_param, field_converter_integer),
+#				("stat", "memory.stat", self.read_param_key_value, field_converter_integer),
 		]
 
 class Blkio(CGroup):
 	def __init__(self, name, path):
 		CGroup.__init__(self, name, self.__class__.__name__, path)
 		self.params += [
+				("io_serviced", "blkio.io_service_bytes", self.read_per_device_key_value, field_converter_integer),
+				("io_serviced_recursive", "blkio.io_service_bytes_recursive", self.read_per_device_key_value, field_converter_integer),
 				("io_service_bytes", "blkio.io_service_bytes", self.read_per_device_key_value, field_converter_integer),
 				("io_service_bytes_recursive", "blkio.io_service_bytes_recursive", self.read_per_device_key_value, field_converter_integer),
 				("io_service_time", "blkio.io_service_time", self.read_per_device_key_value, field_converter_nanosecond),
@@ -223,6 +234,8 @@ class Blkio(CGroup):
 				("io_wait_time_recursive", "blkio.io_wait_time_recursive", self.read_per_device_key_value, field_converter_nanosecond),
 				("io_queued", "blkio.io_queued", self.read_per_device_key_value, field_converter_integer),
 				("io_queued_recursive", "blkio.io_queued_recursive", self.read_per_device_key_value, field_converter_integer),
+				("time", "blkio.time", self.read_per_device_value, field_converter_millisecond),
+				("time_recursive", "blkio.time_recursive", self.read_per_device_value, field_converter_millisecond),
 		]
 
 	def build_data(self, timediff_sec):
@@ -233,7 +246,7 @@ class Blkio(CGroup):
 		r = { }
 
 		for key in self.last_data:
-			if key[:3] == "io_":
+			if key[:3] == "io_" or key[:4] == "time":
 				for dev in self.last_data[key]:
 					if not dev in r_old:
 						r_old[dev] = { "device": dev }
@@ -243,7 +256,7 @@ class Blkio(CGroup):
 				g_old[key] = self.last_data[key]
 
 		for key in self.data:
-			if key[:3] == "io_":
+			if key[:3] == "io_" or key[:4] == "time":
 				for dev in self.data[key]:
 					if not dev in r_new:
 						r_new[dev] = { "device": dev }
@@ -262,6 +275,26 @@ class Blkio(CGroup):
 				r[dev] = compute_difference_over_dictonaries(r_new[dev], { }, timediff_sec)
 
 		return r.values()
+
+	def read_per_device_value(self, param, conv=None):
+		r = { }
+
+		d = self.read_param(param)
+		if d == None:
+			return r
+
+		d = d.split("\n")
+
+		for i in d:
+			j = i.split(" ")
+			if len(j) != 2:
+				continue
+			else:
+				dev = self.get_devname_from_major_minor(j[0])
+				r[dev] = int(j[1])
+
+		return r
+
 
 	def read_per_device_key_value(self, param, conv=None):
 		r = { }
@@ -311,59 +344,59 @@ class Blkio(CGroup):
 			return majmin
 
 class CGroupFilesystem(Source):
-	def __init__(self, mount_point):
+	def __init__(self, mount_point, controller=["blkio", "cpuacct", "memory"]):
 		Source.__init__(self, "CGroupFilesystem")
 		self.mount_point = mount_point
-		self.controler = ["blkio", "cpu", "cpuacct", "memory"]
+		self.controller = controller
 		self.groups = { }
 
-	def enumerate_groups(self, controler):
+	def enumerate_groups(self, controller):
 		r = []
 
-		search_path = "%s/%s" % (self.mount_point, controler)
+		search_path = "%s/%s" % (self.mount_point, controller)
 		for dirname, directories, files in os.walk(search_path):
 			cg = dirname[len(search_path):]
 			if cg == "":
 				cg = "/"
 
-			r += [(cg, dirname, controler)]
+			r += [(cg, dirname, controller)]
 
 		return r
 
 	def update(self):
 		cgs = []
 
-		for controler in self.controler:
-			cgs += self.enumerate_groups(controler)
-			if not controler in self.groups:
-				self.groups[controler] = { }
+		for controller in self.controller:
+			cgs += self.enumerate_groups(controller)
+			if not controller in self.groups:
+				self.groups[controller] = { }
 
-		for name, path, controler in cgs:
-			if not name in self.groups[controler]:
-				if controler == "cpu":
-					self.groups[controler][name] = CPU(name, path)
+		for name, path, controller in cgs:
+			if not name in self.groups[controller]:
+				if controller == "cpu":
+					self.groups[controller][name] = CPU(name, path)
 
-				elif controler == "cpuacct":
-					self.groups[controler][name] = CPUAccount(name, path)
+				elif controller == "cpuacct":
+					self.groups[controller][name] = CPUAccount(name, path)
 
-				elif controler == "memory":
-					self.groups[controler][name] = Memory(name, path)
+				elif controller == "memory":
+					self.groups[controller][name] = Memory(name, path)
 				
-				elif controler == "blkio":
-					self.groups[controler][name] = Blkio(name, path)
+				elif controller == "blkio":
+					self.groups[controller][name] = Blkio(name, path)
 
 				else:
 					continue
 
-			self.groups[controler][name].update()
+			self.groups[controller][name].update()
 
 	def docs(self):
 		self.update()
 
 		docs = []
-		for controler in self.groups:
-			for name in self.groups[controler]:
-				docs += self.groups[controler][name].docs()
+		for controller in self.groups:
+			for name in self.groups[controller]:
+				docs += self.groups[controller][name].docs()
 
 		return docs
 
