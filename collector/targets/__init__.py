@@ -41,6 +41,6 @@ class Console(Target):
 			d = datetime2iso_corrector(doc.data())
 			d["id"] = doc.id()
 			d["type"] = doc.type()
-			out.write(json.dumps(d)+"\n")
+			out.write(json.dumps(d, indent=2)+"\n")
 		else:
 			out.write(str(doc)+"\n")
