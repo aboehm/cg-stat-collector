@@ -67,6 +67,12 @@ def field_converter_microsecond(value):
 	except:
 		return None
 
+def field_converter_millisecond(value):
+	try:
+		return float(value)/(1000.0)
+	except:
+		return None
+
 def field_converter_float(value):
 	try:
 		return float(value)
