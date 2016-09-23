@@ -55,7 +55,7 @@ class CGroup(Source):
 				self.pids = func(filename)
 
 			d = func(filename, conv)
-			if type(d) in [int, float] or len(d) > 0:
+			if d != None and (type(d) in [int, float] or len(d) > 0):
 				self.data[param] = d
 
 	def build_data(self, timediff_sec):
