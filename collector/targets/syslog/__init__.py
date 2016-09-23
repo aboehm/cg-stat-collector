@@ -27,6 +27,6 @@ class Syslog(Target):
 	def push(self, doc):
 		d = datetime2iso_corrector(doc.data())
 		d["type"] = doc.type()
-		syslog.syslog(json.dumps(d))
+		syslog.syslog("@cee: %s" % (json.dumps(d)))
 
 

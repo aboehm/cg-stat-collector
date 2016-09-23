@@ -116,8 +116,11 @@ class TargetAction(argparse.Action):
 				if len(a) != 2:
 					return False
 				else:
-					host = a[0]
-					port = int(a[1])
+					try:
+						host = a[0]
+						port = int(a[1])
+					except Exception as e:
+						return False
 			
 			targets += [NetSyslogRFC5424(host, port, proto=proto, program=get_program_info()["name"])]
 
@@ -129,20 +132,41 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser(
 		prog=get_program_info()["name"],
 		description="System Metric Collector",
-	)
-	parser.add_argument(
-		'--target',
-		help="add logging target",
-		dest='target',
-		default=[],
-		action=TargetAction,
+		epilog="""
+Example:
+
+  Run collector every minute and collect cgroup and ps data. Send it to syslog.
+
+  cg-stat-collector.py \\
+	--interval 60 \\
+	--source cgroupfs,/sys/fs/cgroup \\
+	--source linuxps \\
+	--target syslog
+ \n
+""",
+		formatter_class=argparse.RawTextHelpFormatter
 	)
 	parser.add_argument(
 		'--source',
-		help="add metric source",
+		help="""add a metric source. Following are available
+  - unixps
+  - linuxps
+  - cgroupfs,PATH_TO_CGROUPFS
+""",
 		dest='source',
 		default=[],
 		action=SourceAction,
+	)
+	parser.add_argument(
+		'--target',
+		help="""add a logging target. Following are available
+  - syslog
+  - netsyslog,(tcp|udp)://HOST:PORT
+  - elasticsearch,HOST:PORT
+""",
+		dest='target',
+		default=[],
+		action=TargetAction,
 	)
 	parser.add_argument(
 		'--interval',
