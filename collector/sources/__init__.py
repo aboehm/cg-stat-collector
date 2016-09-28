@@ -45,7 +45,12 @@ def compute_difference_over_dictonaries(new, old, diffseconds = 0):
 
 def field_converter_integer(value):
 	try:
-		return int(value)
+		v = int(value)
+		if (v > 0x7FFFFFFFFFFFFFFF) or (v < -0x8000000000000000):
+			# prohibit integers, that greater as 64-bit signed long
+			return None
+		else:
+			return int(value)
 	except:
 		return None
 

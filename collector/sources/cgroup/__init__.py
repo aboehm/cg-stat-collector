@@ -190,7 +190,7 @@ class CPUAccount(CGroup):
 		self.params += [
 			("usage", "cpuacct.usage", self.read_param, field_converter_nanosecond),
 			("usage_percpu", "cpuacct.usage_percpu", self.read_param_enumerated_array, field_converter_nanosecond),
-#			("stat", "cpuacct.stat", self.read_param_key_value, field_converter_userhz),
+			("stat", "cpuacct.stat", self.read_param_key_value, field_converter_userhz),
 		]
 
 class CPU(CGroup):
@@ -199,7 +199,7 @@ class CPU(CGroup):
 		self.params += [
 				("cfs_period_us", "cpu.cfs_period_us", self.read_param, field_converter_microsecond),
 				("shares", "cpu.shares", self.read_param, field_converter_nanosecond),
-#				("stat", "cpu.stat", self.read_param_key_value, field_converter_nanosecond),
+				("stat", "cpu.stat", self.read_param_key_value, field_converter_nanosecond),
 		]
 
 class Memory(CGroup):
@@ -215,7 +215,7 @@ class Memory(CGroup):
 				("memsw_usage_in_bytes", "memory.memsw.usage_in_bytes", self.read_param, field_converter_integer),
 				("memsw_max_usage_in_bytes", "memory.memsw.max_usage_in_bytes", self.read_param, field_converter_integer),
 				("memsw_failcnt", "memory.memsw.failcnt", self.read_param, field_converter_integer),
-#				("stat", "memory.stat", self.read_param_key_value, field_converter_integer),
+				("stat", "memory.stat", self.read_param_key_value, field_converter_integer),
 		]
 
 class Blkio(CGroup):
