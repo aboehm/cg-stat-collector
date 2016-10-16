@@ -108,12 +108,10 @@ def field_converter_time(value):
 
 		return total
 
-USER_HZ = float(os.sysconf_names['SC_CLK_TCK'])
-
 def field_converter_userhz(value):
 	global USER_HZ
 	try:
-		return float(value)/USER_HZ
+		return float(value)/float(os.sysconf('SC_CLK_TCK'))
 	except:
 		return None
 
