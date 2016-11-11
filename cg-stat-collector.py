@@ -92,7 +92,7 @@ class TargetAction(argparse.Action):
 			if options != None and options.lower() == "stderr":
 				targets += [Console("json", True)]
 			else:
-				targets += [Console("json", True)]
+				targets += [Console("json", False)]
 
 		elif target == "netsyslog":
 			if options == None:
@@ -149,6 +149,7 @@ Example:
 	parser.add_argument(
 		'--source',
 		help="""add a metric source. Following are available
+  - console
   - unixps
   - linuxps
   - cgroupfs,PATH_TO_CGROUPFS

@@ -248,7 +248,7 @@ class Blkio(CGroup):
 		for key in self.last_data:
 			if key[:3] == "io_" or key[:4] == "time":
 				for dev in self.last_data[key]:
-					if not dev in r_old:
+					if dev not in r_old:
 						r_old[dev] = { "device": dev }
 
 					r_old[dev][key] = self.last_data[key][dev]
@@ -258,7 +258,7 @@ class Blkio(CGroup):
 		for key in self.data:
 			if key[:3] == "io_" or key[:4] == "time":
 				for dev in self.data[key]:
-					if not dev in r_new:
+					if dev not in r_new:
 						r_new[dev] = { "device": dev }
 
 					r_new[dev][key] = self.data[key][dev]
@@ -311,10 +311,13 @@ class Blkio(CGroup):
 				continue
 			else:
 				dev = self.get_devname_from_major_minor(j[0])
-				if dev in r:
-					r[dev][j[1]] = int(j[2])
-				else:
+				if dev not in r:
 					r[dev] = { }
+
+				if conv != None:
+					r[dev][j[1]] = conv(j[2])
+				else:
+					r[dev][j[1]] = j[2]
 
 		return r
 
