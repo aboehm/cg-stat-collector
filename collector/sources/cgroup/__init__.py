@@ -227,7 +227,7 @@ class Blkio(CGroup):
 				("io_service_bytes", "blkio.io_service_bytes", self.read_per_device_key_value, field_converter_integer),
 				("io_service_bytes_recursive", "blkio.io_service_bytes_recursive", self.read_per_device_key_value, field_converter_integer),
 				("io_service_time", "blkio.io_service_time", self.read_per_device_key_value, field_converter_nanosecond),
-				("io_service_time_recursive", "blkio.io_service_time_recursive", self.read_per_device_key_value, None),
+				("io_service_time_recursive", "blkio.io_service_time_recursive", self.read_per_device_key_value, field_converter_integer),
 				("io_merged", "blkio.io_merged", self.read_per_device_key_value, field_converter_integer),
 				("io_merged_recursive", "blkio.io_merged_recursive", self.read_per_device_key_value, field_converter_integer),
 				("io_wait_time", "blkio.io_wait_time", self.read_per_device_key_value, field_converter_nanosecond),
