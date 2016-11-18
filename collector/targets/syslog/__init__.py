@@ -18,7 +18,7 @@ class NetSyslogRFC5424(Target):
 	def push(self, doc):
 		d = datetime2iso_corrector(doc.data())
 		d["type"] = doc.type()
-		self.client.log("@cee: %s" % (json.dumps(d)), facility=SyslogClient.FAC_SYSLOG, severity=SyslogClient.SEV_DEBUG, program=self.program, pid=os.getpid())
+		self.client.log("@cee: %s" % (json.dumps(d)), facility=SyslogClient.FAC_SYSLOG, severity=SyslogClient.SEV_DEBUG, program=self.program, pid=os.getpid(), timestamp=datetime.utcnow())
 
 class Syslog(Target):
 	def __init__(self):

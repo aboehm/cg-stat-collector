@@ -50,12 +50,12 @@ class Document:
 class Source:
 	def __init__(self, name):
 		self.name = name
-		self.timestamp = datetime.now()
-		self.last_timestamp = datetime.now()
+		self.timestamp = datetime.utcnow()
+		self.last_timestamp = datetime.utcnow()
 
 	def update(self):
 		self.last_timestamp = self.timestamp
-		self.timestamp = datetime.now()
+		self.timestamp = datetime.utcnow()
 
 	def docs(self):
 		return []
@@ -75,10 +75,8 @@ class Source:
 				"day": self.timestamp.day,
 				"minute": self.timestamp.minute,
 				"second": self.timestamp.second,
-				"microsecond": self.timestamp.microsecond,
 				"weekday": self.timestamp.strftime("%A"),
 				"utc": self.timestamp.isoformat(),
-				"localtime": (self.timestamp-utcdelta).isoformat(),
 			}
 		}
 

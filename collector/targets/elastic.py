@@ -12,7 +12,7 @@ class Elasticsearch(Target):
 		self.index_format = index_format
 
 	def get_current_index(self):
-		return datetime.now().strftime(self.index_format)
+		return datetime.utcnow().strftime(self.index_format)
 
 	def push(self, doc):
 		self.client.index(
