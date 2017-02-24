@@ -1,0 +1,2056 @@
+{
+  "collector" : {
+    "order" : 0,
+    "template" : "collector-*",
+    "settings" : { },
+    "mappings" : {
+      "UnixPS" : {
+        "properties" : {
+          "tags" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "UnixPS" : {
+            "properties" : {
+              "comm" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "pgid" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "ppid" : {
+                "type" : "string"
+              },
+              "args" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "rgroup" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "vsz" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "nice" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "pcpu" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "double"
+                  },
+                  "difference" : {
+                    "type" : "double"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "pid" : {
+                "type" : "string"
+              },
+              "ruser" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "time" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "etime" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "tty" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "group" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "user" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              }
+            }
+          },
+          "host" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "facility" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "pids" : {
+            "type" : "string"
+          },
+          "collected" : {
+            "properties" : {
+              "microsecond" : {
+                "type" : "long"
+              },
+              "minute" : {
+                "type" : "long"
+              },
+              "localtime" : {
+                "format" : "strict_date_optional_time||epoch_millis",
+                "type" : "date"
+              },
+              "second" : {
+                "type" : "long"
+              },
+              "weekday" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "month" : {
+                "type" : "long"
+              },
+              "utc" : {
+                "format" : "strict_date_optional_time||epoch_millis",
+                "type" : "date"
+              },
+              "year" : {
+                "type" : "long"
+              },
+              "day" : {
+                "type" : "long"
+              },
+              "hour" : {
+                "type" : "long"
+              }
+            }
+          },
+          "program" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "hostname" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "severity" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "type" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          }
+        }
+      },
+      "_default_" : {
+        "dynamic_templates" : [ {
+          "message_field" : {
+            "mapping" : {
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "type" : "string"
+            },
+            "match" : "message",
+            "match_mapping_type" : "string"
+          }
+        }, {
+          "string_fields" : {
+            "mapping" : {
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "fielddata" : {
+                "format" : "disabled"
+              },
+              "type" : "string",
+              "fields" : {
+                "raw" : {
+                  "index" : "not_analyzed",
+                  "ignore_above" : 256,
+                  "type" : "string"
+                }
+              }
+            },
+            "match" : "*",
+            "match_mapping_type" : "string"
+          }
+        } ],
+        "properties" : {
+          "@timestamp" : {
+            "format" : "strict_date_optional_time||epoch_millis",
+            "type" : "date"
+          },
+          "@version" : {
+            "index" : "not_analyzed",
+            "analyzer" : "keyword",
+            "type" : "string"
+          }
+        },
+        "_all" : {
+          "enabled" : true,
+          "omit_norms" : true
+        }
+      },
+      "CPUAccount" : {
+        "properties" : {
+          "tags" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "host" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "facility" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "pids" : {
+            "type" : "string"
+          },
+          "collected" : {
+            "properties" : {
+              "microsecond" : {
+                "type" : "long"
+              },
+              "minute" : {
+                "type" : "long"
+              },
+              "localtime" : {
+                "format" : "strict_date_optional_time||epoch_millis",
+                "type" : "date"
+              },
+              "second" : {
+                "type" : "long"
+              },
+              "weekday" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "month" : {
+                "type" : "long"
+              },
+              "utc" : {
+                "format" : "strict_date_optional_time||epoch_millis",
+                "type" : "date"
+              },
+              "year" : {
+                "type" : "long"
+              },
+              "day" : {
+                "type" : "long"
+              },
+              "hour" : {
+                "type" : "long"
+              }
+            }
+          },
+          "program" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "name" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "path" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "hostname" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "severity" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "CPUAccount" : {
+            "properties" : {
+              "usage_percpu" : {
+                "properties" : {
+                  "3" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "double"
+                      },
+                      "difference" : {
+                        "type" : "double"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "2" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "double"
+                      },
+                      "difference" : {
+                        "type" : "double"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "1" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "double"
+                      },
+                      "difference" : {
+                        "type" : "double"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "0" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "double"
+                      },
+                      "difference" : {
+                        "type" : "double"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "7" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "double"
+                      },
+                      "difference" : {
+                        "type" : "double"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "6" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "double"
+                      },
+                      "difference" : {
+                        "type" : "double"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "5" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "double"
+                      },
+                      "difference" : {
+                        "type" : "double"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "4" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "double"
+                      },
+                      "difference" : {
+                        "type" : "double"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "usage" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "double"
+                  },
+                  "difference" : {
+                    "type" : "double"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "tasks" : {
+                "properties" : {
+                  "items" : {
+                    "type" : "long"
+                  }
+                }
+              }
+            }
+          },
+          "type" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "@version" : {
+            "index" : "not_analyzed",
+            "analyzer" : "keyword",
+            "type" : "string"
+          }
+        }
+      },
+      "LinuxPS" : {
+        "properties" : {
+          "tags" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "host" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "facility" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "pids" : {
+            "type" : "string"
+          },
+          "collected" : {
+            "properties" : {
+              "microsecond" : {
+                "type" : "long"
+              },
+              "minute" : {
+                "type" : "long"
+              },
+              "localtime" : {
+                "format" : "strict_date_optional_time||epoch_millis",
+                "type" : "date"
+              },
+              "second" : {
+                "type" : "long"
+              },
+              "weekday" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "month" : {
+                "type" : "long"
+              },
+              "utc" : {
+                "format" : "strict_date_optional_time||epoch_millis",
+                "type" : "date"
+              },
+              "year" : {
+                "type" : "long"
+              },
+              "day" : {
+                "type" : "long"
+              },
+              "hour" : {
+                "type" : "long"
+              }
+            }
+          },
+          "program" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "LinuxPS" : {
+            "properties" : {
+              "nlwp" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "eip" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "fuser" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "pgid" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "egid" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "pidns" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "maj_flt" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "vsz" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "fgid" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "sgid" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "state" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "nice" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "ipcns" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "ruser" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "esp" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "time" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "rgid" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "suid" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "sched" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "pending" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "command" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "rss" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "psr" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "euid" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "min_flt" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "comm" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "ppid" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "rgroup" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "stackp" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "class" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "pcpu" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "double"
+                  },
+                  "difference" : {
+                    "type" : "double"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "pid" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "netns" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "mntns" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "drs" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "rtprio" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "size" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "trs" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "fgroup" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "ruid" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "pmem" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "double"
+                  },
+                  "difference" : {
+                    "type" : "double"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "etime" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "tty" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "fuid" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "group" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "user" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              }
+            }
+          },
+          "hostname" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "severity" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "type" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          }
+        }
+      },
+      "Blkio" : {
+        "properties" : {
+          "tags" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "host" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "facility" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "Blkio" : {
+            "properties" : {
+              "io_merged" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "io_service_bytes" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "io_wait_time_recursive" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "io_merged_recursive" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "io_service_time_recursive" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "io_wait_time" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "tasks" : {
+                "properties" : {
+                  "items" : {
+                    "type" : "long"
+                  }
+                }
+              },
+              "io_service_bytes_recursive" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "io_serviced" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "io_queued_recursive" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "time" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "io_serviced_recursive" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "io_service_time" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "device" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "io_queued" : {
+                "properties" : {
+                  "Async" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Sync" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Write" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Read" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  },
+                  "Total" : {
+                    "properties" : {
+                      "absolute" : {
+                        "type" : "long"
+                      },
+                      "difference" : {
+                        "type" : "long"
+                      },
+                      "difference_per_second" : {
+                        "type" : "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "time_recursive" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              }
+            }
+          },
+          "pids" : {
+            "type" : "string"
+          },
+          "collected" : {
+            "properties" : {
+              "microsecond" : {
+                "type" : "long"
+              },
+              "minute" : {
+                "type" : "long"
+              },
+              "localtime" : {
+                "format" : "strict_date_optional_time||epoch_millis",
+                "type" : "date"
+              },
+              "second" : {
+                "type" : "long"
+              },
+              "weekday" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "month" : {
+                "type" : "long"
+              },
+              "utc" : {
+                "format" : "strict_date_optional_time||epoch_millis",
+                "type" : "date"
+              },
+              "year" : {
+                "type" : "long"
+              },
+              "day" : {
+                "type" : "long"
+              },
+              "hour" : {
+                "type" : "long"
+              }
+            }
+          },
+          "program" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "name" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "path" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "hostname" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "severity" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "type" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          }
+        }
+      },
+      "Memory" : {
+        "properties" : {
+          "tags" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "Memory" : {
+            "properties" : {
+              "failcnt" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "memsw_max_usage_in_bytes" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "max_usage_in_bytes" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "memsw_usage_in_bytes" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "tasks" : {
+                "properties" : {
+                  "items" : {
+                    "type" : "long"
+                  }
+                }
+              },
+              "usage_in_bytes" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              },
+              "memsw_failcnt" : {
+                "properties" : {
+                  "absolute" : {
+                    "type" : "long"
+                  },
+                  "difference" : {
+                    "type" : "long"
+                  },
+                  "difference_per_second" : {
+                    "type" : "double"
+                  }
+                }
+              }
+            }
+          },
+          "host" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "facility" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "pids" : {
+            "type" : "string"
+          },
+          "collected" : {
+            "properties" : {
+              "microsecond" : {
+                "type" : "long"
+              },
+              "minute" : {
+                "type" : "long"
+              },
+              "localtime" : {
+                "format" : "strict_date_optional_time||epoch_millis",
+                "type" : "date"
+              },
+              "second" : {
+                "type" : "long"
+              },
+              "weekday" : {
+                "analyzer" : "keyword",
+                "type" : "string"
+              },
+              "month" : {
+                "type" : "long"
+              },
+              "utc" : {
+                "format" : "strict_date_optional_time||epoch_millis",
+                "type" : "date"
+              },
+              "year" : {
+                "type" : "long"
+              },
+              "day" : {
+                "type" : "long"
+              },
+              "hour" : {
+                "type" : "long"
+              }
+            }
+          },
+          "program" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "name" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "path" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "hostname" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          },
+          "severity" : {
+            "analyzer" : "keyword",
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "aliases" : { }
+  }
+}
